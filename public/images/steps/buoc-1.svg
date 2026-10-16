@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400"><rect width="400" height="400" rx="40" fill="#FFFAF3"/><circle cx="200" cy="205" r="150" fill="#F5EBDD"/><rect x="130" y="150" width="140" height="110" rx="10" fill="#C8A27A"/><rect x="190" y="150" width="20" height="110" fill="#E8A0B4"/>
+  <g transform="translate(200 150) scale(0.55)">
+    <path d="M0 0 C -30 -40 -90 -50 -95 -15 C -98 15 -40 20 0 0 Z" fill="#E8A0B4"/>
+    <path d="M0 0 C 30 -40 90 -50 95 -15 C 98 15 40 20 0 0 Z" fill="#E8A0B4"/>
+    <path d="M-6 4 L -40 70 L -22 64 L -14 82 L 2 8 Z" fill="#E8A0B4" opacity="0.9"/>
+    <path d="M6 4 L 40 70 L 22 64 L 14 82 L -2 8 Z" fill="#E8A0B4" opacity="0.9"/>
+    <circle r="14" fill="#E8A0B4" stroke="#00000020" stroke-width="3"/>
+  </g><text x="200" y="370" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#6E5E52">Minh hoạ · Thay bằng ảnh thật</text></svg>

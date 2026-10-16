@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400"><rect width="400" height="400" fill="#FFFAF3"/>
+  <circle cx="200" cy="175" r="105" fill="#E8A0B4" opacity="0.2"/>
+  <rect x="140" y="110" width="120" height="130" rx="22" fill="#E8A0B4"/>
+  <rect x="140" y="150" width="120" height="22" fill="#FFFAF3" opacity="0.6"/>
+  <text x="200" y="320" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="700" fill="#6B3E26">Bánh bông lan mini</text>
+  <text x="200" y="356" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#6E5E52">Thay bằng ảnh thật</text></svg>

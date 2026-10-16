@@ -1,0 +1,8 @@
+[
+  { "id": "hoa-nhi", "name": "Hoa nhí", "background": "#FCE8EE", "ink": "#6B2A3A", "accent": "#E8A0B4", "pattern": "flowers", "occasions": ["20-10", "sinh-nhat", "valentine"] },
+  { "id": "tim-do", "name": "Trái tim", "background": "#FBE3E1", "ink": "#7A1E22", "accent": "#C8323C", "pattern": "hearts", "occasions": ["valentine", "20-10"] },
+  { "id": "kraft-moc", "name": "Kraft mộc", "background": "#EAD7BD", "ink": "#4A2C1A", "accent": "#9C7A56", "pattern": "plain", "occasions": ["20-11", "tot-nghiep", "ky-yeu", "sinh-nhat"] },
+  { "id": "troi-xanh", "name": "Trời xanh", "background": "#E2ECF8", "ink": "#1F3B5C", "accent": "#5B8DC9", "pattern": "dots", "occasions": ["ky-yeu", "tot-nghiep", "20-11"] },
+  { "id": "bong-tuyet", "name": "Bông tuyết", "background": "#E5EFE6", "ink": "#24452B", "accent": "#C8323C", "pattern": "snow", "occasions": ["giang-sinh"] },
+  { "id": "nang-vang", "name": "Nắng vàng", "background": "#FBF0D3", "ink": "#5A3E00", "accent": "#E9C46A", "pattern": "stripes", "occasions": ["sinh-nhat", "20-10", "tot-nghiep"] }
+]

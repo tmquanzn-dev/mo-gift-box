@@ -1,0 +1,195 @@
+// Database của MÓ Gift Box.
+// Mặc định dùng SQLite cho dễ chạy. Muốn chuyển sang PostgreSQL: đổi provider = "postgresql"
+// và DATABASE_URL trong .env, rồi chạy `npx prisma migrate dev`.
+// Các trường mảng (images, occasions...) lưu dạng chuỗi JSON để tương thích mọi loại database.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Occasion {
+  id          String @id
+  slug        String @unique
+  name        String
+  shortName   String
+  description String
+  month       Int?
+  day         Int?
+  coverImage  String
+  sortOrder   Int    @default(0)
+}
+
+model Product {
+  id               String   @id
+  slug             String   @unique
+  name             String
+  shortDescription String
+  description      String
+  price            Int
+  compareAtPrice   Int?
+  images           String // JSON string[]
+  occasions        String // JSON string[] – slug của dịp
+  recipients       String // JSON string[]
+  colorThemes      String // JSON string[]
+  length           Float
+  width            Float
+  height           Float
+  contents         String // JSON {name, quantity}[]
+  isCustomizable   Boolean  @default(true)
+  stock            Int
+  badges           String // JSON string[] – chỉ nhãn gán tay; "Sắp hết" được tính tự động theo tồn kho
+  rating           Float?
+  soldCount        Int      @default(0)
+  isActive         Boolean  @default(true)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([price])
+}
+
+model BoxItem {
+  id          String  @id
+  name        String
+  description String
+  price       Int
+  size        Int     @default(1)
+  stock       Int
+  image       String
+  category    String
+  isActive    Boolean @default(true)
+}
+
+model Coupon {
+  code        String   @id
+  type        String // "percent" | "fixed"
+  value       Int
+  minOrder    Int      @default(0)
+  maxDiscount Int?
+  startsAt    DateTime
+  endsAt      DateTime
+  usageLimit  Int
+  usedCount   Int      @default(0)
+  description String
+  isFeatured  Boolean  @default(false)
+  isActive    Boolean  @default(true)
+}
+
+model User {
+  id           String    @id @default(cuid())
+  email        String    @unique // luôn lưu chữ thường
+  phone        String?   @unique
+  fullName     String
+  passwordHash String // scrypt$N$r$p$salt$hash
+  role         String    @default("customer") // "customer" | "admin"
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  sessions     Session[]
+  orders       Order[]
+}
+
+/** Phiên đăng nhập. Cookie chỉ chứa token ngẫu nhiên; database lưu SHA-256 của token để lộ DB cũng không dùng lại được. */
+model Session {
+  id        String   @id @default(cuid())
+  tokenHash String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+model Order {
+  id                   String       @id @default(cuid())
+  code                 String       @unique
+  userId               String?
+  user                 User?        @relation(fields: [userId], references: [id], onDelete: SetNull)
+  customerName         String
+  customerPhone        String
+  customerEmail        String?
+  recipientName        String
+  recipientPhone       String
+  provinceId           String
+  provinceName         String
+  wardId               String?
+  wardName             String
+  street               String
+  note                 String?
+  zone                 String // "noi-thanh" | "ngoai-thanh"
+  preferredDate        String?
+  hidePrice            Boolean      @default(false)
+  express              Boolean      @default(false)
+  paymentMethod        String // "bank_transfer" | "cod"
+  paymentStatus        String       @default("unpaid")
+  status               String       @default("pending")
+  couponCode           String?
+  subtotal             Int
+  discount             Int
+  shippingFee          Int
+  surchargeHandwritten Int
+  surchargePremium     Int
+  surchargeExpress     Int
+  total                Int
+  expectedFrom         String
+  expectedTo           String
+  // Thông tin vận chuyển do admin nhập khi giao hàng
+  carrier              String? // xem lib/carriers.ts
+  trackingCode         String?
+  shipperName          String?
+  shipperPhone         String?
+  createdAt            DateTime     @default(now())
+  updatedAt            DateTime     @updatedAt
+  items                OrderItem[]
+  events               OrderEvent[]
+
+  @@index([customerPhone])
+  @@index([status])
+  @@index([userId])
+}
+
+model OrderItem {
+  id            String  @id @default(cuid())
+  orderId       String
+  order         Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  kind          String // "product" | "custom-box"
+  productId     String?
+  slug          String?
+  name          String
+  image         String
+  colorTheme    String
+  quantity      Int
+  unitPrice     Int
+  customization String // JSON Customization
+  box           String? // JSON CustomBoxSelection
+}
+
+model OrderEvent {
+  id        String   @id @default(cuid())
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  status    String
+  note      String?
+  createdAt DateTime @default(now())
+
+  @@index([orderId])
+}
+
+model Subscriber {
+  email     String   @id
+  createdAt DateTime @default(now())
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  fullName  String
+  phone     String
+  email     String?
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}

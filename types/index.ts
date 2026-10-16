@@ -1,3 +1,4 @@
+import type { CarrierId } from "@/lib/carriers";
 export type ColorThemeId = "hong" | "do" | "xanh-duong" | "xanh-la" | "vang" | "kraft" | "tim";
 export type RecipientId = "ban-be" | "thay-co" | "nguoi-yeu" | "gia-dinh" | "dong-nghiep";
 export type BadgeId = "ban-chay" | "moi" | "sap-het";
@@ -170,6 +171,13 @@ export interface OrderEvent {
   createdAt: string;
 }
 
+export interface Shipment {
+  carrier: CarrierId;
+  trackingCode: string | null;
+  shipperName: string | null;
+  shipperPhone: string | null;
+}
+
 export interface Order {
   code: string;
   customer: Contact;
@@ -191,6 +199,8 @@ export interface Order {
   express: boolean;
   createdAt: string;
   expectedDeliveryDate: { from: string; to: string };
+  /** null khi admin chưa nhập thông tin vận chuyển */
+  shipment: Shipment | null;
   events: OrderEvent[];
 }
 

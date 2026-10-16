@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { businessConfig } from "@/config/site.config";
+import { CARRIER_IDS, type CarrierId } from "./carriers";
 import { normalizeMessage, normalizeName, normalizePhone } from "./text";
 
 /** Giá trị đặc biệt của ô Phường/Xã khi khách tự nhập tên phường không có trong danh sách. */
@@ -176,3 +177,74 @@ export const contactSchema = z.object({
     .min(10, { message: "Bạn viết thêm một chút để MÓ hiểu rõ hơn nhé (ít nhất 10 ký tự)." })
     .max(1000, { message: "Nội dung tối đa 1000 ký tự." }),
 });
+
+/* ---------- Tài khoản ---------- */
+
+export const PASSWORD_MIN = 8;
+
+export function validatePassword(value: string): string | null {
+  if (!value) return "Bạn đặt mật khẩu giúp MÓ nhé.";
+  if (value.length < PASSWORD_MIN) return `Mật khẩu cần ít nhất ${PASSWORD_MIN} ký tự.`;
+  if (value.length > 100) return "Mật khẩu tối đa 100 ký tự.";
+  if (!/\p{L}/u.test(value) || !/\d/.test(value)) return "Mật khẩu cần có cả chữ và số.";
+  return null;
+}
+
+const emailField = z
+  .string()
+  .trim()
+  .toLowerCase()
+  .min(1, { message: "Bạn nhập email giúp MÓ nhé." })
+  .max(100, { message: "Email tối đa 100 ký tự." })
+  .refine((v) => EMAIL_PATTERN.test(v), { message: "Email chưa đúng định dạng, ví dụ ban@gmail.com." });
+
+const newPasswordField = z.string().superRefine((v, ctx) => issue(ctx, validatePassword(v)));
+
+export const registerSchema = z
+  .object({
+    fullName: fullNameField,
+    email: emailField,
+    phone: phoneField,
+    password: newPasswordField,
+    confirmPassword: z.string(),
+  })
+  .refine((v) => v.password === v.confirmPassword, { message: "Mật khẩu nhập lại chưa khớp.", path: ["confirmPassword"] });
+export type RegisterValues = z.input<typeof registerSchema>;
+
+export const loginSchema = z.object({
+  identifier: z.string().trim().min(1, { message: "Bạn nhập email hoặc số điện thoại nhé." }).max(100),
+  password: z.string().min(1, { message: "Bạn nhập mật khẩu nhé." }).max(200),
+});
+export type LoginValues = z.input<typeof loginSchema>;
+
+export const profileSchema = z.object({ fullName: fullNameField, phone: phoneField });
+export type ProfileValues = z.input<typeof profileSchema>;
+
+export const changePasswordSchema = z
+  .object({
+    currentPassword: z.string().min(1, { message: "Bạn nhập mật khẩu hiện tại nhé." }).max(200),
+    newPassword: newPasswordField,
+    confirmPassword: z.string(),
+  })
+  .refine((v) => v.newPassword === v.confirmPassword, { message: "Mật khẩu nhập lại chưa khớp.", path: ["confirmPassword"] })
+  .refine((v) => v.newPassword !== v.currentPassword, { message: "Mật khẩu mới cần khác mật khẩu hiện tại.", path: ["newPassword"] });
+export type ChangePasswordValues = z.input<typeof changePasswordSchema>;
+
+/* ---------- Vận chuyển (admin nhập) ---------- */
+
+export const shipmentSchema = z
+  .object({
+    carrier: z.enum(CARRIER_IDS as [CarrierId, ...CarrierId[]]).nullable(),
+    trackingCode: z
+      .string()
+      .trim()
+      .max(50, { message: "Mã vận đơn tối đa 50 ký tự." })
+      .refine((v) => v === "" || /^[A-Za-z0-9._-]+$/.test(v), { message: "Mã vận đơn chỉ gồm chữ, số và dấu . - _" }),
+    shipperName: z.string().max(50, { message: "Tên shipper tối đa 50 ký tự." }),
+    shipperPhone: z.string().superRefine((v, ctx) => issue(ctx, v.trim() ? validatePhone(v) : null)),
+  })
+  .refine((v) => !v.carrier || v.carrier === "shop" || v.carrier === "ahamove" || v.carrier === "grab" || v.trackingCode !== "", {
+    message: "Bạn nhập mã vận đơn của hãng nhé.",
+    path: ["trackingCode"],
+  });
+export type ShipmentPayload = z.output<typeof shipmentSchema>;

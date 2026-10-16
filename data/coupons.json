@@ -1,0 +1,54 @@
+[
+  {
+    "code": "MOYEU20",
+    "type": "percent",
+    "value": 20,
+    "minOrder": 199000,
+    "maxDiscount": 40000,
+    "startsAt": "2026-10-01T00:00:00+07:00",
+    "endsAt": "2026-12-31T23:59:59+07:00",
+    "usageLimit": 200,
+    "usedCount": 0,
+    "description": "Ưu đãi mùa quà 20/10 – 20/11 – Giáng sinh",
+    "isFeatured": true
+  },
+  {
+    "code": "GIAM15K",
+    "type": "fixed",
+    "value": 15000,
+    "minOrder": 149000,
+    "maxDiscount": null,
+    "startsAt": "2026-01-01T00:00:00+07:00",
+    "endsAt": "2027-06-30T23:59:59+07:00",
+    "usageLimit": 500,
+    "usedCount": 0,
+    "description": "Giảm thẳng 15.000đ cho đơn từ 149.000đ",
+    "isFeatured": false
+  },
+  {
+    "code": "THAYCO10",
+    "type": "percent",
+    "value": 10,
+    "minOrder": 99000,
+    "maxDiscount": 30000,
+    "startsAt": "2026-11-01T00:00:00+07:00",
+    "endsAt": "2026-11-20T23:59:59+07:00",
+    "usageLimit": 300,
+    "usedCount": 0,
+    "description": "Tri ân thầy cô 20/11 (chưa đến ngày áp dụng – dùng để kiểm thử)",
+    "isFeatured": false
+  },
+  {
+    "code": "HE2026",
+    "type": "fixed",
+    "value": 20000,
+    "minOrder": 0,
+    "maxDiscount": null,
+    "startsAt": "2026-06-01T00:00:00+07:00",
+    "endsAt": "2026-08-31T23:59:59+07:00",
+    "usageLimit": 100,
+    "usedCount": 0,
+    "description": "Ưu đãi hè 2026 (đã hết hạn – dùng để kiểm thử)",
+    "isFeatured": false
+  }
+]

@@ -1,0 +1,18 @@
+[
+  { "id": "bi-banh-quy-bo", "name": "Bánh quy bơ", "description": "Gói 4 chiếc, giòn thơm vị bơ", "price": 15000, "size": 1, "stock": 200, "image": "/images/items/bi-banh-quy-bo.svg", "category": "Bánh" },
+  { "id": "bi-banh-bong-lan", "name": "Bánh bông lan mini", "description": "2 chiếc, mềm xốp", "price": 18000, "size": 1, "stock": 120, "image": "/images/items/bi-banh-bong-lan.svg", "category": "Bánh" },
+  { "id": "bi-banh-gao", "name": "Bánh gạo giòn", "description": "Gói nhỏ vị mặn ngọt", "price": 10000, "size": 1, "stock": 200, "image": "/images/items/bi-banh-gao.svg", "category": "Bánh" },
+  { "id": "bi-socola-sua", "name": "Socola sữa", "description": "3 thanh nhỏ", "price": 25000, "size": 1, "stock": 150, "image": "/images/items/bi-socola-sua.svg", "category": "Kẹo & socola" },
+  { "id": "bi-socola-tim", "name": "Socola trái tim", "description": "6 viên hình trái tim", "price": 32000, "size": 1, "stock": 90, "image": "/images/items/bi-socola-tim.svg", "category": "Kẹo & socola" },
+  { "id": "bi-keo-deo", "name": "Kẹo dẻo trái cây", "description": "Túi nhỏ nhiều màu", "price": 12000, "size": 1, "stock": 200, "image": "/images/items/bi-keo-deo.svg", "category": "Kẹo & socola" },
+  { "id": "bi-keo-mut", "name": "Kẹo mút cầu vồng", "description": "1 cây xoắn nhiều màu", "price": 8000, "size": 1, "stock": 200, "image": "/images/items/bi-keo-mut.svg", "category": "Kẹo & socola" },
+  { "id": "bi-snack-khoai", "name": "Snack khoai tây", "description": "Gói nhỏ vị tự nhiên", "price": 18000, "size": 1, "stock": 150, "image": "/images/items/bi-snack-khoai.svg", "category": "Snack" },
+  { "id": "bi-snack-rong-bien", "name": "Snack rong biển", "description": "Gói giòn vị cay nhẹ", "price": 15000, "size": 1, "stock": 150, "image": "/images/items/bi-snack-rong-bien.svg", "category": "Snack" },
+  { "id": "bi-tra-tui-loc", "name": "Trà hoa cúc", "description": "Hộp 5 túi lọc", "price": 20000, "size": 1, "stock": 100, "image": "/images/items/bi-tra-tui-loc.svg", "category": "Đồ uống" },
+  { "id": "bi-ca-phe", "name": "Cà phê phin giấy", "description": "3 gói pha nhanh", "price": 22000, "size": 1, "stock": 100, "image": "/images/items/bi-ca-phe.svg", "category": "Đồ uống" },
+  { "id": "bi-hoa-kho", "name": "Nhánh hoa khô", "description": "Hoa cúc hoặc hồng khô", "price": 30000, "size": 1, "stock": 80, "image": "/images/items/bi-hoa-kho.svg", "category": "Trang trí" },
+  { "id": "bi-nen-thom", "name": "Nến thơm mini", "description": "Hũ thuỷ tinh, hương vani", "price": 35000, "size": 2, "stock": 60, "image": "/images/items/bi-nen-thom.svg", "category": "Trang trí" },
+  { "id": "bi-gau-bong", "name": "Gấu bông mini", "description": "Cao khoảng 12cm", "price": 45000, "size": 2, "stock": 50, "image": "/images/items/bi-gau-bong.svg", "category": "Trang trí" },
+  { "id": "bi-moc-khoa", "name": "Móc khoá nỉ", "description": "Hình mây, tim hoặc sao", "price": 25000, "size": 1, "stock": 100, "image": "/images/items/bi-moc-khoa.svg", "category": "Trang trí" },
+  { "id": "bi-so-tay", "name": "Sổ tay kraft", "description": "Khổ A6, 80 trang", "price": 28000, "size": 2, "stock": 70, "image": "/images/items/bi-so-tay.svg", "category": "Văn phòng phẩm" }
+]

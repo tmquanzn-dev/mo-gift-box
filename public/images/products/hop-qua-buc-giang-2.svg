@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800">
+  <defs>
+    <radialGradient id="g" cx="50%" cy="38%" r="75%">
+      <stop offset="0" stop-color="#FFFAF3"/>
+      <stop offset="1" stop-color="#F5EBDD"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="800" fill="url(#g)"/>
+  <circle cx="680" cy="120" r="128" fill="#5B8DC9" opacity="0.12"/>
+  <circle cx="96" cy="640" r="96" fill="#5B8DC9" opacity="0.1"/>
+  <ellipse cx="400" cy="650" rx="260" ry="26" fill="#6B3E26" opacity="0.12"/>
+  <rect x="520" y="200" width="240" height="70" rx="8" fill="#A9835B" transform="rotate(18 640 235)"/>
+  <rect x="615" y="200" width="44" height="70" fill="#5B8DC9" transform="rotate(18 640 235)"/>
+  <rect x="150" y="390" width="440" height="250" rx="10" fill="#C8A27A"/>
+  <path d="M150 390 h440 l-30 40 h-380 z" fill="#A9835B"/>
+  <path d="M170 360 q 14 -10 28 2" stroke="#5B8DC9" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M207 373 q 14 -10 28 2" stroke="#D9BE98" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M244 362 q 14 -10 28 2" stroke="#D9BE98" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M281 375 q 14 -10 28 2" stroke="#5B8DC9" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M318 364 q 14 -10 28 2" stroke="#D9BE98" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M355 377 q 14 -10 28 2" stroke="#D9BE98" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M392 366 q 14 -10 28 2" stroke="#5B8DC9" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M429 379 q 14 -10 28 2" stroke="#D9BE98" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M466 368 q 14 -10 28 2" stroke="#D9BE98" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M503 381 q 14 -10 28 2" stroke="#5B8DC9" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M540 370 q 14 -10 28 2" stroke="#D9BE98" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M177 383 q 14 -10 28 2" stroke="#D9BE98" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M214 372 q 14 -10 28 2" stroke="#5B8DC9" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M251 361 q 14 -10 28 2" stroke="#D9BE98" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M288 374 q 14 -10 28 2" stroke="#D9BE98" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M325 363 q 14 -10 28 2" stroke="#5B8DC9" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M362 376 q 14 -10 28 2" stroke="#D9BE98" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M399 365 q 14 -10 28 2" stroke="#D9BE98" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M436 378 q 14 -10 28 2" stroke="#5B8DC9" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M473 367 q 14 -10 28 2" stroke="#D9BE98" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M510 380 q 14 -10 28 2" stroke="#D9BE98" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M547 369 q 14 -10 28 2" stroke="#5B8DC9" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M184 382 q 14 -10 28 2" stroke="#D9BE98" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M221 371 q 14 -10 28 2" stroke="#D9BE98" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M258 360 q 14 -10 28 2" stroke="#5B8DC9" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M295 373 q 14 -10 28 2" stroke="#D9BE98" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <rect x="210" y="300" width="70" height="120" rx="12" fill="#5B8DC9"/>
+  <circle cx="335" cy="345" r="48" fill="#7B4A2E"/>
+  <circle cx="335" cy="345" r="30" fill="#9A6440"/>
+  <rect x="400" y="290" width="56" height="130" rx="8" fill="#FFFAF3" stroke="#5B8DC9" stroke-width="5"/>
+  <circle cx="510" cy="350" r="40" fill="#5B8DC9" opacity="0.75"/>
+  <path d="M500 300 q 20 -40 40 -10" stroke="#7FA77A" stroke-width="6" fill="none"/>
+  <g>
+    <rect x="230" y="742" width="340" height="34" rx="17" fill="#FFFAF3" fill-opacity="0.92" stroke="#C8A27A"/>
+    <text x="400" y="764" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="600" fill="#6B3E26">Hộp mở · Thay bằng ảnh thật</text>
+  </g></svg>

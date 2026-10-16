@@ -1,0 +1,65 @@
+[
+  {
+    "id": "occ-20-10",
+    "slug": "20-10",
+    "name": "Phụ nữ Việt Nam 20/10",
+    "shortName": "20/10",
+    "description": "Một hộp quà xinh cho mẹ, cho cô, cho cô bạn thân.",
+    "date": { "month": 10, "day": 20 },
+    "coverImage": "/images/occasions/20-10.svg"
+  },
+  {
+    "id": "occ-20-11",
+    "slug": "20-11",
+    "name": "Nhà giáo Việt Nam 20/11",
+    "shortName": "20/11",
+    "description": "Gửi lời cảm ơn đến người đã dìu dắt bạn.",
+    "date": { "month": 11, "day": 20 },
+    "coverImage": "/images/occasions/20-11.svg"
+  },
+  {
+    "id": "occ-giang-sinh",
+    "slug": "giang-sinh",
+    "name": "Giáng sinh 25/12",
+    "shortName": "Giáng sinh",
+    "description": "Mùa đông ấm hơn khi có quà từ người thương.",
+    "date": { "month": 12, "day": 25 },
+    "coverImage": "/images/occasions/giang-sinh.svg"
+  },
+  {
+    "id": "occ-sinh-nhat",
+    "slug": "sinh-nhat",
+    "name": "Sinh nhật",
+    "shortName": "Sinh nhật",
+    "description": "Tuổi mới thêm ngọt với một hộp quà bất ngờ.",
+    "date": null,
+    "coverImage": "/images/occasions/sinh-nhat.svg"
+  },
+  {
+    "id": "occ-ky-yeu",
+    "slug": "ky-yeu",
+    "name": "Kỷ yếu",
+    "shortName": "Kỷ yếu",
+    "description": "Giữ lại thanh xuân bằng một món quà nhỏ.",
+    "date": null,
+    "coverImage": "/images/occasions/ky-yeu.svg"
+  },
+  {
+    "id": "occ-valentine",
+    "slug": "valentine",
+    "name": "Valentine 14/2",
+    "shortName": "Valentine",
+    "description": "Nói thương bằng socola, hoa và một tấm thiệp.",
+    "date": { "month": 2, "day": 14 },
+    "coverImage": "/images/occasions/valentine.svg"
+  },
+  {
+    "id": "occ-tot-nghiep",
+    "slug": "tot-nghiep",
+    "name": "Tốt nghiệp",
+    "shortName": "Tốt nghiệp",
+    "description": "Chúc mừng một chặng đường đã hoàn thành.",
+    "date": null,
+    "coverImage": "/images/occasions/tot-nghiep.svg"
+  }
+]

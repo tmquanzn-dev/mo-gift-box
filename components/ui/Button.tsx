@@ -77,21 +77,28 @@ export function ButtonLink({ variant = "primary", size = "md", leftIcon, rightIc
   );
 }
 
+export type TooltipSide = "top" | "bottom" | "left" | "right";
+
 interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /** Bắt buộc: mô tả cho trình đọc màn hình */
   "aria-label": string;
   variant?: "ghost" | "surface" | "primary";
   size?: "sm" | "md";
+  /** Chú thích hiện khi rê chuột. Mặc định dùng aria-label; truyền false để tắt. */
+  tooltip?: string | false;
+  tooltipSide?: TooltipSide;
 }
 
 export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(function IconButton(
-  { variant = "ghost", size = "md", className, type = "button", ...props },
+  { variant = "ghost", size = "md", className, type = "button", tooltip, tooltipSide, ...props },
   ref,
 ) {
   return (
     <button
       ref={ref}
       type={type}
+      data-tooltip={tooltip === false ? undefined : (tooltip ?? props["aria-label"])}
+      data-tooltip-side={tooltipSide}
       className={cn(
         "relative inline-flex shrink-0 items-center justify-center rounded-full transition-colors duration-200 disabled:opacity-50",
         size === "md" ? "size-11" : "size-9",

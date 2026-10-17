@@ -27,7 +27,7 @@ function StickyBuyBar({ price, onAdd, onBuy, disabled }: { price: number; onAdd:
           <p className="text-caption text-text-muted">Tạm tính</p>
           <p className="font-bold text-text tabular-nums">{formatVND(price)}</p>
         </div>
-        <Button variant="outline" onClick={onAdd} disabled={disabled} aria-label="Thêm vào giỏ" className="px-4">
+        <Button variant="outline" onClick={onAdd} disabled={disabled} aria-label="Thêm vào giỏ" data-tooltip="Thêm vào giỏ" data-tooltip-side="top" className="px-4">
           <ShoppingBag className="size-5" aria-hidden="true" />
         </Button>
         <Button onClick={onBuy} disabled={disabled}>

@@ -244,3 +244,13 @@ export async function deleteProduct(id: string): Promise<void> {
   const res = await db.product.deleteMany({ where: { id } });
   if (res.count === 0) throw new ProductError("not_found", "Không tìm thấy sản phẩm.", 404);
 }
+
+/** Sản phẩm đang bán mà sắp hết hoặc đã hết hàng – nhắc admin nhập thêm. */
+export async function listLowStockProducts(limit = 8): Promise<AdminProduct[]> {
+  const rows = await db.product.findMany({
+    where: { isActive: true, stock: { lte: businessConfig.stock.lowStockThreshold } },
+    orderBy: { stock: "asc" },
+    take: limit,
+  });
+  return rows.map(toAdminProduct);
+}

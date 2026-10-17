@@ -39,7 +39,7 @@ export default async function AccountPage({ searchParams }: PageProps<"/tai-khoa
         </div>
         <div className="flex flex-wrap items-center gap-2">
           {user.role === "admin" && (
-            <ButtonLink href="/admin/don-hang" variant="secondary" size="sm" leftIcon={<LayoutDashboard className="size-4" aria-hidden="true" />}>
+            <ButtonLink href="/admin" variant="secondary" size="sm" leftIcon={<LayoutDashboard className="size-4" aria-hidden="true" />}>
               Trang quản trị
             </ButtonLink>
           )}

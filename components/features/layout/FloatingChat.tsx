@@ -50,6 +50,8 @@ export function FloatingChat() {
         type="button"
         aria-expanded={open}
         aria-label={open ? "Đóng khung chat" : "Chat với MÓ qua Zalo hoặc Messenger"}
+        data-tooltip={open ? "Đóng" : "Chat với MÓ"}
+        data-tooltip-side="left"
         onClick={() => setOpen((v) => !v)}
         className={cn(
           "flex size-11 items-center md:size-13 justify-center rounded-full shadow-float transition-colors",

@@ -464,3 +464,42 @@ export async function getOrderStats() {
   const grouped = await db.order.groupBy({ by: ["status"], _count: { _all: true } });
   return Object.fromEntries(grouped.map((g) => [g.status, g._count._all])) as Partial<Record<OrderStatus, number>>;
 }
+
+/* ---------- Tổng quan cho admin ---------- */
+
+/** Các trạng thái admin còn phải xử lý. */
+export const ACTIVE_STATUSES: OrderStatus[] = ["pending", "confirmed", "preparing", "shipping"];
+
+/** 0h hôm nay theo giờ Việt Nam (UTC+7), dù server chạy múi giờ nào. */
+function startOfTodayVN(now = new Date()): Date {
+  const VN_OFFSET = 7 * 60 * 60 * 1000;
+  const vn = new Date(now.getTime() + VN_OFFSET);
+  vn.setUTCHours(0, 0, 0, 0);
+  return new Date(vn.getTime() - VN_OFFSET);
+}
+
+export async function getAdminDashboard() {
+  const since = startOfTodayVN();
+  const [today, todayRevenue, stats, recent] = await Promise.all([
+    db.order.count({ where: { createdAt: { gte: since } } }),
+    db.order.aggregate({ where: { createdAt: { gte: since }, status: { not: "cancelled" } }, _sum: { total: true } }),
+    getOrderStats(),
+    listOrders({ take: 8 }),
+  ]);
+  return {
+    todayOrders: today,
+    todayRevenue: todayRevenue._sum.total ?? 0,
+    stats,
+    activeCount: ACTIVE_STATUSES.reduce((sum, s) => sum + (stats[s] ?? 0), 0),
+    recent,
+  };
+}
+
+/** Dữ liệu nhẹ để trang admin hỏi định kỳ xem có đơn mới không. */
+export async function getPendingSummary() {
+  const [pending, latest] = await Promise.all([
+    db.order.count({ where: { status: "pending" } }),
+    db.order.findFirst({ orderBy: { createdAt: "desc" }, select: { code: true, customerName: true, total: true } }),
+  ]);
+  return { pending, latest };
+}

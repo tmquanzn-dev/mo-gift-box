@@ -2,14 +2,17 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { ClipboardList, LayoutDashboard, Package, Store } from "lucide-react";
 import { LogoutButton } from "@/components/features/account/AccountClient";
+import { Logo } from "@/components/features/layout/Logo";
 import { Button } from "@/components/ui/Button";
 import { Field, Input, Select } from "@/components/ui/Form";
 import { toast } from "@/components/ui/Toaster";
 import { postJSON } from "@/lib/api-client";
 import { CARRIER_IDS, CARRIERS, type CarrierId } from "@/lib/carriers";
 import { ORDER_STATUS_LABELS, PAYMENT_STATUS_LABELS } from "@/lib/catalog";
+import { formatVND } from "@/lib/format";
 import { cn } from "@/lib/text";
 import type { OrderStatus, PaymentStatus, Shipment } from "@/types";
 
@@ -17,31 +20,109 @@ import type { OrderStatus, PaymentStatus, Shipment } from "@/types";
 export { LogoutButton };
 
 const ADMIN_LINKS = [
-  { href: "/admin/don-hang", label: "Đơn hàng" },
-  { href: "/admin/san-pham", label: "Sản phẩm" },
+  { href: "/admin", label: "Tổng quan", icon: LayoutDashboard },
+  { href: "/admin/don-hang", label: "Đơn hàng", icon: ClipboardList },
+  { href: "/admin/san-pham", label: "Sản phẩm", icon: Package },
 ];
 
-export function AdminNav() {
+const POLL_MS = 20_000;
+
+type PendingSummary = { pending: number; latest: { code: string; customerName: string; total: number } | null };
+
+/**
+ * Thanh điều hướng riêng của khu quản trị (thay header cửa hàng).
+ * Cứ 20 giây hỏi server một lần: có đơn mới thì hiện thông báo, cập nhật số đơn chờ và làm mới trang đang xem.
+ */
+export function AdminHeader({ initial, adminName }: { initial: PendingSummary; adminName: string }) {
   const pathname = usePathname();
+  const router = useRouter();
+  const [pending, setPending] = useState(initial.pending);
+  const lastCode = useRef(initial.latest?.code ?? null);
+
+  useEffect(() => {
+    let stopped = false;
+    const check = async () => {
+      if (document.hidden) return;
+      try {
+        const res = await fetch("/api/admin/orders/summary", { cache: "no-store" });
+        if (!res.ok || stopped) return;
+        const data = (await res.json()) as PendingSummary;
+        setPending(data.pending);
+        if (data.latest && data.latest.code !== lastCode.current) {
+          lastCode.current = data.latest.code;
+          toast.success("Có đơn hàng mới!", { description: `${data.latest.code} · ${data.latest.customerName} · ${formatVND(data.latest.total)}` });
+          router.refresh();
+        }
+      } catch {
+        /* mất mạng tạm thời – lần sau hỏi lại */
+      }
+    };
+    const timer = setInterval(check, POLL_MS);
+    document.addEventListener("visibilitychange", check);
+    return () => {
+      stopped = true;
+      clearInterval(timer);
+      document.removeEventListener("visibilitychange", check);
+    };
+  }, [router]);
+
+  // Hiện số đơn chờ trên tab trình duyệt để để ý được cả khi đang ở tab khác.
+  // Next.js đặt lại <title> sau mỗi lần chuyển trang nên theo dõi thẻ title và gắn lại tiền tố.
+  useEffect(() => {
+    const apply = () => {
+      const base = document.title.replace(/^\(\d+\) /, "");
+      const next = pending > 0 ? `(${pending}) ${base}` : base;
+      if (document.title !== next) document.title = next;
+    };
+    apply();
+    const observer = new MutationObserver(apply);
+    observer.observe(document.head, { subtree: true, childList: true, characterData: true });
+    return () => observer.disconnect();
+  }, [pending]);
+
   return (
-    <div className="mb-6 flex flex-wrap items-center justify-between gap-3 border-b border-border pb-4">
-      <nav aria-label="Quản trị" className="flex gap-2">
-        {ADMIN_LINKS.map((l) => {
-          const active = pathname.startsWith(l.href);
-          return (
-            <Link
-              key={l.href}
-              href={l.href}
-              aria-current={active ? "page" : undefined}
-              className={cn("rounded-full px-4 py-2 text-small font-semibold", active ? "bg-primary text-on-dark" : "text-primary hover:bg-primary-soft")}
-            >
-              {l.label}
-            </Link>
-          );
-        })}
-      </nav>
-      <LogoutButton />
-    </div>
+    <header className="sticky top-0 z-40 border-b border-border bg-surface/95 backdrop-blur">
+      <div className="container-page flex h-16 items-center gap-3">
+        <Link href="/admin" className="flex items-center gap-2">
+          <Logo size="sm" asLink={false} />
+          <span className="hidden rounded-full bg-primary-soft px-2.5 py-0.5 text-caption font-semibold text-primary sm:inline">Quản trị</span>
+        </Link>
+        <nav aria-label="Quản trị" className="scrollbar-none mx-auto flex gap-1 overflow-x-auto">
+          {ADMIN_LINKS.map(({ href, label, icon: Icon }) => {
+            const active = href === "/admin" ? pathname === "/admin" : pathname.startsWith(href);
+            return (
+              <Link
+                key={href}
+                href={href}
+                aria-current={active ? "page" : undefined}
+                className={cn(
+                  "relative flex h-10 shrink-0 items-center gap-2 rounded-full px-3 text-small font-semibold sm:px-4",
+                  active ? "bg-primary text-on-dark" : "text-primary hover:bg-primary-soft",
+                )}
+              >
+                <Icon className="size-4" aria-hidden="true" />
+                <span className="hidden sm:inline">{label}</span>
+                <span className="sr-only sm:hidden">{label}</span>
+                {href === "/admin/don-hang" && pending > 0 && (
+                  <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-accent-strong px-1 text-[11px] font-bold text-white tabular-nums" aria-label={`${pending} đơn chờ xác nhận`}>
+                    {pending > 99 ? "99+" : pending}
+                  </span>
+                )}
+              </Link>
+            );
+          })}
+        </nav>
+        <div className="flex items-center gap-1">
+          <Link href="/" target="_blank" className="hidden h-10 items-center gap-1.5 rounded-full px-3 text-small font-semibold text-primary hover:bg-primary-soft md:flex">
+            <Store className="size-4" aria-hidden="true" /> Xem cửa hàng
+          </Link>
+          <span className="hidden max-w-32 truncate text-small text-text-muted lg:inline" title={adminName}>
+            {adminName}
+          </span>
+          <LogoutButton />
+        </div>
+      </div>
+    </header>
   );
 }
 

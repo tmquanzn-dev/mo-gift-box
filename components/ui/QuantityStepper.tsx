@@ -21,7 +21,7 @@ export function QuantityStepper({ value, onChange, min = 1, max = 99, size = "md
   );
   return (
     <div role="group" aria-label={label} className={cn("inline-flex items-center rounded-full border-[1.5px] border-border-strong bg-surface", className)}>
-      <button type="button" className={btn} onClick={() => onChange(clamp(value - 1))} disabled={value <= min} aria-label="Giảm số lượng">
+      <button type="button" className={btn} onClick={() => onChange(clamp(value - 1))} disabled={value <= min} aria-label="Giảm số lượng" data-tooltip="Bớt 1">
         <Minus className="size-4" aria-hidden="true" />
       </button>
       <input
@@ -34,7 +34,7 @@ export function QuantityStepper({ value, onChange, min = 1, max = 99, size = "md
         onChange={(e) => onChange(clamp(Number(e.target.value)))}
         className={cn("w-10 bg-transparent text-center font-semibold tabular-nums focus:outline-none", size === "sm" && "text-small")}
       />
-      <button type="button" className={btn} onClick={() => onChange(clamp(value + 1))} disabled={value >= max} aria-label="Tăng số lượng">
+      <button type="button" className={btn} onClick={() => onChange(clamp(value + 1))} disabled={value >= max} aria-label="Tăng số lượng" data-tooltip="Thêm 1">
         <Plus className="size-4" aria-hidden="true" />
       </button>
     </div>

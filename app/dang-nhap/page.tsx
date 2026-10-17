@@ -11,7 +11,8 @@ export const metadata: Metadata = {
 
 export default async function LoginPage({ searchParams }: PageProps<"/dang-nhap">) {
   const next = safeNextPath((await searchParams).next);
-  if (await getCurrentUser()) redirect(next);
+  const user = await getCurrentUser();
+  if (user) redirect(user.role === "admin" && !next.startsWith("/admin") ? "/admin" : next);
   return (
     <div className="container-page flex justify-center pt-10 pb-16">
       <div className="w-full max-w-md rounded-card bg-surface p-6 shadow-soft sm:p-8">

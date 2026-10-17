@@ -79,6 +79,8 @@ export function CartLineItem({ item, compact = false }: { item: CartItem; compac
           </div>
           <IconButton
             aria-label={`Xoá ${item.name} khỏi giỏ`}
+            tooltip="Xoá khỏi giỏ"
+            tooltipSide="left"
             size="sm"
             onClick={() => {
               removeItem(item.lineId);

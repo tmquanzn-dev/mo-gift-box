@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronDown, CircleUserRound, Menu, PackageSearch, Search, ShoppingBag } from "lucide-react";
+import { ChevronDown, CircleUserRound, LayoutDashboard, Menu, PackageSearch, Search, ShoppingBag } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { buttonClasses, IconButton } from "@/components/ui/Button";
 import { shopHref } from "@/lib/filters";
@@ -82,7 +82,7 @@ export function CartButton() {
   const openDrawer = useCartStore((s) => s.openDrawer);
   const shown = isClient ? count : 0;
   return (
-    <IconButton aria-label={shown > 0 ? `Giỏ hàng, ${shown} sản phẩm` : "Giỏ hàng trống"} onClick={openDrawer}>
+    <IconButton aria-label={shown > 0 ? `Giỏ hàng, ${shown} sản phẩm` : "Giỏ hàng trống"} tooltip="Giỏ hàng" onClick={openDrawer}>
       <ShoppingBag className="size-6" aria-hidden="true" />
       {shown > 0 && (
         <span
@@ -105,10 +105,21 @@ export function CartButton() {
 function AccountButtons() {
   const { user } = useSession();
 
+  // Admin xem cửa hàng: thay giỏ hàng + avatar bằng nút quay lại trang quản trị
+  if (user?.role === "admin") {
+    return (
+      <Link href="/admin" className={buttonClasses("secondary", "sm", "ml-1 px-3")}>
+        <LayoutDashboard className="size-4" aria-hidden="true" />
+        <span className="hidden sm:inline">Quản trị</span>
+        <span className="sr-only sm:hidden">Trang quản trị</span>
+      </Link>
+    );
+  }
+
   if (user) {
     const label = `Tài khoản của ${user.fullName}`;
     return (
-      <Link href="/tai-khoan" aria-label={label} title={label} className="inline-flex h-11 items-center gap-2 rounded-full px-1.5 text-primary hover:bg-primary-soft md:pr-3">
+      <Link href="/tai-khoan" aria-label={label} data-tooltip="Tài khoản của tôi" className="inline-flex h-11 items-center gap-2 rounded-full px-1.5 text-primary hover:bg-primary-soft md:pr-3">
         <span aria-hidden="true" className="flex size-8 items-center justify-center rounded-full bg-primary text-small font-bold text-on-dark">
           {initial(user.fullName)}
         </span>
@@ -149,6 +160,7 @@ function initial(fullName: string): string {
 
 export function Header({ occasions }: { occasions: Occasion[] }) {
   const pathname = usePathname();
+  const isAdmin = useSession().user?.role === "admin";
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -193,17 +205,18 @@ export function Header({ occasions }: { occasions: Occasion[] }) {
         </nav>
 
         <div className="-mr-2 flex items-center gap-0.5">
-          <IconButton aria-label="Tìm kiếm hộp quà" onClick={() => setSearchOpen(true)}>
+          <IconButton aria-label="Tìm kiếm hộp quà" tooltip="Tìm kiếm" onClick={() => setSearchOpen(true)}>
             <Search className="size-[22px]" aria-hidden="true" />
           </IconButton>
           <Link
             href="/tra-cuu-don-hang"
             aria-label="Tra cứu đơn hàng"
+            data-tooltip="Tra cứu đơn hàng"
             className="hidden size-11 items-center justify-center rounded-full text-primary hover:bg-primary-soft sm:inline-flex"
           >
             <PackageSearch className="size-[22px]" aria-hidden="true" />
           </Link>
-          <CartButton />
+          {!isAdmin && <CartButton />}
           <AccountButtons />
         </div>
       </div>

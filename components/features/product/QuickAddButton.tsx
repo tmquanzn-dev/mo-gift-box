@@ -13,6 +13,8 @@ export function QuickAddButton({ product }: { product: Product }) {
     <button
       type="button"
       aria-label={`Thêm nhanh ${product.name} vào giỏ`}
+      data-tooltip="Thêm nhanh vào giỏ"
+      data-tooltip-side="left"
       onClick={() => {
         addItem({
           kind: "product",

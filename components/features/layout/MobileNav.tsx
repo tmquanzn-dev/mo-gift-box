@@ -59,7 +59,7 @@ export function MobileNav({ open, onClose, occasions }: { open: boolean; onClose
           </li>
           {user?.role === "admin" && (
             <li>
-              <Link href="/admin/don-hang" className="flex h-12 items-center gap-2 rounded-box px-3 text-body font-semibold text-text hover:bg-primary-soft">
+              <Link href="/admin" className="flex h-12 items-center gap-2 rounded-box px-3 text-body font-semibold text-text hover:bg-primary-soft">
                 <LayoutDashboard className="size-5 text-primary" aria-hidden="true" />
                 Trang quản trị
               </Link>

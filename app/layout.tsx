@@ -7,6 +7,7 @@ import { AnnouncementBar } from "@/components/features/layout/AnnouncementBar";
 import { FloatingChat } from "@/components/features/layout/FloatingChat";
 import { Footer } from "@/components/features/layout/Footer";
 import { Header } from "@/components/features/layout/Header";
+import { HideOnAdmin } from "@/components/features/layout/HideOnAdmin";
 import { Toaster } from "@/components/ui/Toaster";
 import { siteConfig } from "@/config/site.config";
 import { listOccasions } from "@/services/product.service";
@@ -83,14 +84,18 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         >
           Bỏ qua đến nội dung chính
         </a>
-        <AnnouncementBar />
-        <Header occasions={occasions} />
+        <HideOnAdmin>
+          <AnnouncementBar />
+          <Header occasions={occasions} />
+        </HideOnAdmin>
         <main id="noi-dung-chinh" className="flex-1" tabIndex={-1}>
           {children}
         </main>
-        <Footer />
-        <CartDrawer />
-        <FloatingChat />
+        <HideOnAdmin>
+          <Footer />
+          <CartDrawer />
+          <FloatingChat />
+        </HideOnAdmin>
         <Toaster />
         <CartHydrator />
         {process.env.NODE_ENV === "development" && (

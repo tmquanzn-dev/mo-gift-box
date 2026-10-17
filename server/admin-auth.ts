@@ -7,7 +7,7 @@ export async function isAdmin(): Promise<boolean> {
   return (await getCurrentUser())?.role === "admin";
 }
 
-export async function requireAdmin(next = "/admin/don-hang"): Promise<SessionUser> {
+export async function requireAdmin(next = "/admin"): Promise<SessionUser> {
   const user = await getCurrentUser();
   if (!user) redirect(`/dang-nhap?next=${encodeURIComponent(next)}`);
   if (user.role !== "admin") redirect("/tai-khoan?loi=khong-co-quyen");

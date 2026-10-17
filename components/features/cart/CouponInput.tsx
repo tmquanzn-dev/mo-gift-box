@@ -54,6 +54,8 @@ export function CouponInput() {
             type="button"
             onClick={removeCoupon}
             aria-label={`Bỏ mã ${couponCode}`}
+            data-tooltip="Bỏ mã giảm giá"
+            data-tooltip-side="left"
             className="inline-flex size-8 items-center justify-center rounded-full text-text-muted hover:bg-surface"
           >
             <X className="size-4" aria-hidden="true" />

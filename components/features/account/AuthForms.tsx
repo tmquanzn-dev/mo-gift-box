@@ -23,6 +23,8 @@ export const PasswordInput = forwardRef<HTMLInputElement, Omit<ComponentProps<ty
         type="button"
         onClick={() => setVisible((v) => !v)}
         aria-label={visible ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
+        data-tooltip={visible ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
+        data-tooltip-side="top"
         aria-pressed={visible}
         className="absolute top-1/2 right-1.5 flex size-9 -translate-y-1/2 items-center justify-center rounded-full text-text-muted hover:bg-primary-soft hover:text-primary"
       >
@@ -71,8 +73,8 @@ export function LoginForm({ next }: { next: string }) {
     }
     setSessionUser(res.user);
     toast.success(`Chào ${res.user.fullName}!`);
-    // Quản trị viên đăng nhập từ trang thường thì đưa thẳng vào trang quản trị
-    router.replace(res.user.role === "admin" && next === "/tai-khoan" ? "/admin/don-hang" : next);
+    // Quản trị viên luôn vào thẳng trang quản trị (trừ khi đang được đưa về một trang quản trị cụ thể)
+    router.replace(res.user.role === "admin" && !next.startsWith("/admin") ? "/admin" : next);
     router.refresh();
   });
 

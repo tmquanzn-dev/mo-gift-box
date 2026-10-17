@@ -172,6 +172,72 @@
   .scrollbar-none::-webkit-scrollbar {
     display: none;
   }
+
+  /*
+   * Tooltip: thêm data-tooltip="Chú thích" vào nút, hiện khi rê chuột (máy tính) hoặc focus bằng bàn phím.
+   * Hướng mặc định là phía dưới; đổi bằng data-tooltip-side="top" | "left" | "right".
+   * Chỉ tạo ::after lúc hiện để tooltip ẩn không làm trang bị cuộn ngang.
+   * position: relative nằm ở layer components nên class absolute/fixed của Tailwind vẫn thắng.
+   */
+  [data-tooltip] {
+    position: relative;
+  }
+  [data-tooltip]:focus-visible::after,
+  [data-tooltip]:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    z-index: 60;
+    top: calc(100% + 6px);
+    left: 50%;
+    translate: -50% 0;
+    padding: 4px 8px;
+    border-radius: 6px;
+    background: var(--color-text);
+    color: var(--color-surface);
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: normal;
+    white-space: nowrap;
+    pointer-events: none;
+    box-shadow: var(--shadow-soft);
+    animation: tooltip-in 140ms ease-out 350ms both;
+  }
+  [data-tooltip][data-tooltip-side="top"]:is(:hover, :focus-visible)::after {
+    top: auto;
+    bottom: calc(100% + 6px);
+  }
+  [data-tooltip][data-tooltip-side="left"]:is(:hover, :focus-visible)::after {
+    top: 50%;
+    left: auto;
+    right: calc(100% + 6px);
+    translate: 0 -50%;
+  }
+  [data-tooltip][data-tooltip-side="right"]:is(:hover, :focus-visible)::after {
+    top: 50%;
+    left: calc(100% + 6px);
+    translate: 0 -50%;
+  }
+  /* Màn hình cảm ứng: chạm sẽ "dính" trạng thái hover nên không hiện tooltip khi chạm */
+  @media (hover: none) {
+    [data-tooltip]:hover:not(:focus-visible)::after {
+      content: none;
+    }
+  }
+  /* Nút bị vô hiệu hoá thì không cần chú thích */
+  [data-tooltip]:disabled::after {
+    content: none !important;
+  }
+}
+
+@keyframes tooltip-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* Tôn trọng người dùng muốn giảm chuyển động */

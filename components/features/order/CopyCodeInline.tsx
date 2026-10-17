@@ -18,6 +18,7 @@ export function CopyCodeInline({ code }: { code: string }) {
         }
       }}
       aria-label={`Sao chép mã đơn ${code}`}
+      data-tooltip={copied ? "Đã sao chép" : "Bấm để sao chép mã đơn"}
       className="inline-flex items-center gap-2 rounded-full bg-primary-soft px-5 py-2 font-mono text-h3 font-bold tracking-wider text-primary hover:bg-secondary/30"
     >
       {code}

@@ -82,6 +82,8 @@ export function Toaster() {
               type="button"
               onClick={() => dismiss(t.id)}
               aria-label="Đóng thông báo"
+              data-tooltip="Đóng"
+              data-tooltip-side="left"
               className="-m-1 inline-flex size-8 items-center justify-center rounded-full text-text-muted hover:bg-primary-soft"
             >
               <X className="size-4" aria-hidden="true" />

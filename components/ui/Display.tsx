@@ -165,6 +165,7 @@ export function Chip({ children, onRemove, removeLabel }: { children: ReactNode;
           type="button"
           onClick={onRemove}
           aria-label={removeLabel ?? "Xoá"}
+          data-tooltip={removeLabel ?? "Xoá"}
           className="inline-flex size-7 items-center justify-center rounded-full text-text-muted hover:bg-primary-soft hover:text-primary"
         >
           <X className="size-4" aria-hidden="true" />

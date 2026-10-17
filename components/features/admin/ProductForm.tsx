@@ -209,12 +209,22 @@ export function ProductForm({ product, occasions }: { product?: AdminProduct; oc
                     {i === 0 && <span className="absolute top-2 left-2 rounded-full bg-primary px-2 py-0.5 text-caption font-semibold text-on-dark">Ảnh chính</span>}
                     <div className="absolute inset-x-0 bottom-0 flex justify-between gap-1 bg-gradient-to-t from-text/60 to-transparent p-2">
                       <div className="flex gap-1">
-                        <button type="button" aria-label="Đưa lên trước" disabled={i === 0} onClick={() => moveImage(i, i - 1)} className="rounded-full bg-surface p-1.5 text-primary disabled:opacity-40">
+                        <button
+                          type="button"
+                          aria-label="Đưa lên trước"
+                          data-tooltip="Chuyển ảnh lên trước"
+                          data-tooltip-side="top"
+                          disabled={i === 0}
+                          onClick={() => moveImage(i, i - 1)}
+                          className="rounded-full bg-surface p-1.5 text-primary disabled:opacity-40"
+                        >
                           <ArrowLeft className="size-4" aria-hidden="true" />
                         </button>
                         <button
                           type="button"
                           aria-label="Đưa ra sau"
+                          data-tooltip="Chuyển ảnh ra sau"
+                          data-tooltip-side="top"
                           disabled={i === images.length - 1}
                           onClick={() => moveImage(i, i + 1)}
                           className="rounded-full bg-surface p-1.5 text-primary disabled:opacity-40"
@@ -222,7 +232,14 @@ export function ProductForm({ product, occasions }: { product?: AdminProduct; oc
                           <ArrowRight className="size-4" aria-hidden="true" />
                         </button>
                       </div>
-                      <button type="button" aria-label={`Bỏ ảnh ${i + 1}`} onClick={() => setImages((prev) => prev.filter((s) => s !== src))} className="rounded-full bg-surface p-1.5 text-error">
+                      <button
+                        type="button"
+                        aria-label={`Bỏ ảnh ${i + 1}`}
+                        data-tooltip="Bỏ ảnh này"
+                        data-tooltip-side="top"
+                        onClick={() => setImages((prev) => prev.filter((s) => s !== src))}
+                        className="rounded-full bg-surface p-1.5 text-error"
+                      >
                         <X className="size-4" aria-hidden="true" />
                       </button>
                     </div>
@@ -275,7 +292,7 @@ export function ProductForm({ product, occasions }: { product?: AdminProduct; oc
                       className="h-11 text-center"
                     />
                   </div>
-                  <button type="button" aria-label={`Xoá món ${i + 1}`} onClick={() => setContents((prev) => prev.filter((_, j) => j !== i))} className="mt-1 rounded-full p-2 text-text-muted hover:bg-error-bg hover:text-error">
+                  <button type="button" aria-label={`Xoá món ${i + 1}`} data-tooltip="Xoá món này" data-tooltip-side="left" onClick={() => setContents((prev) => prev.filter((_, j) => j !== i))} className="mt-1 rounded-full p-2 text-text-muted hover:bg-error-bg hover:text-error">
                     <Trash2 className="size-4" aria-hidden="true" />
                   </button>
                 </li>

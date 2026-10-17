@@ -3,7 +3,8 @@ import { siteConfig } from "@/config/site.config";
 import { POLICIES } from "@/data/policies";
 import { listAllProductSlugs, listOccasions } from "@/services/product.service";
 
-export const revalidate = 3600;
+// Đọc database khi có request, không chạy lúc build
+export const dynamic = "force-dynamic";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = siteConfig.url.replace(/\/$/, "");

@@ -400,7 +400,8 @@ export async function updateOrderStatus(code: string, next: OrderStatus, note?: 
       }
       for (const item of row.items) {
         if (item.kind === "product" && item.productId) {
-          await tx.product.update({
+          // updateMany: sản phẩm có thể đã bị admin xoá, khi đó bỏ qua thay vì làm hỏng thao tác huỷ đơn
+          await tx.product.updateMany({
             where: { id: item.productId },
             data: { stock: { increment: item.quantity }, soldCount: { decrement: item.quantity } },
           });

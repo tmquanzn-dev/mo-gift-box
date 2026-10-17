@@ -1,8 +1,10 @@
 import "server-only";
+import { randomUUID } from "node:crypto";
 import type { Prisma, Product as ProductRow, Occasion as OccasionRow, BoxItem as BoxItemRow } from "@prisma/client";
 import { businessConfig } from "@/config/site.config";
 import { getBudget } from "@/lib/filters";
 import { removeDiacritics } from "@/lib/text";
+import type { ProductInput } from "@/lib/validation";
 import { db } from "@/server/db";
 import type { BadgeId, BoxItem, Occasion, Product, ProductFilters } from "@/types";
 
@@ -156,4 +158,89 @@ export async function listOccasions(): Promise<Occasion[]> {
 export async function listBoxItems(): Promise<BoxItem[]> {
   const rows = await db.boxItem.findMany({ where: { isActive: true }, orderBy: [{ category: "asc" }, { price: "asc" }] });
   return rows.map(toBoxItem);
+}
+
+/* ---------- Quản trị sản phẩm ---------- */
+
+export type AdminProduct = Product & { isActive: boolean; manualBadges: BadgeId[]; updatedAt: string };
+
+function toAdminProduct(row: ProductRow): AdminProduct {
+  return {
+    ...toProduct(row),
+    isActive: row.isActive,
+    manualBadges: parseJSON<BadgeId[]>(row.badges, []).filter((b) => b !== "sap-het"),
+    updatedAt: row.updatedAt.toISOString(),
+  };
+}
+
+/** Lỗi nghiệp vụ khi admin sửa sản phẩm (trùng đường dẫn, không tìm thấy…). */
+export class ProductError extends Error {
+  constructor(
+    public code: string,
+    message: string,
+    public status = 400,
+    public field?: string,
+  ) {
+    super(message);
+  }
+}
+
+/** Admin thấy cả sản phẩm đang ẩn. */
+export async function listProductsForAdmin(): Promise<AdminProduct[]> {
+  const rows = await db.product.findMany({ orderBy: [{ isActive: "desc" }, { updatedAt: "desc" }] });
+  return rows.map(toAdminProduct);
+}
+
+export async function getProductForAdmin(id: string): Promise<AdminProduct | null> {
+  const row = await db.product.findUnique({ where: { id } });
+  return row ? toAdminProduct(row) : null;
+}
+
+function toProductData(input: ProductInput) {
+  return {
+    slug: input.slug,
+    name: input.name,
+    shortDescription: input.shortDescription,
+    description: input.description,
+    price: input.price,
+    compareAtPrice: input.compareAtPrice,
+    images: JSON.stringify(input.images),
+    occasions: JSON.stringify(input.occasions),
+    recipients: JSON.stringify(input.recipients),
+    colorThemes: JSON.stringify(input.colorThemes),
+    length: input.dimensions.length,
+    width: input.dimensions.width,
+    height: input.dimensions.height,
+    contents: JSON.stringify(input.contents),
+    isCustomizable: input.isCustomizable,
+    stock: input.stock,
+    badges: JSON.stringify(input.badges),
+    isActive: input.isActive,
+  };
+}
+
+async function assertSlugFree(slug: string, exceptId?: string) {
+  const taken = await db.product.findFirst({ where: { slug, ...(exceptId ? { id: { not: exceptId } } : {}) }, select: { id: true } });
+  if (taken) throw new ProductError("slug_taken", "Đường dẫn này đã có sản phẩm khác dùng, bạn đổi đường dẫn khác nhé.", 409, "slug");
+}
+
+export async function createProduct(input: ProductInput): Promise<AdminProduct> {
+  await assertSlugFree(input.slug);
+  const row = await db.product.create({ data: { id: `p-${randomUUID().slice(0, 8)}`, ...toProductData(input) } });
+  return toAdminProduct(row);
+}
+
+export async function updateProduct(id: string, input: ProductInput): Promise<AdminProduct> {
+  if (!(await db.product.findUnique({ where: { id }, select: { id: true } }))) {
+    throw new ProductError("not_found", "Không tìm thấy sản phẩm.", 404);
+  }
+  await assertSlugFree(input.slug, id);
+  const row = await db.product.update({ where: { id }, data: toProductData(input) });
+  return toAdminProduct(row);
+}
+
+/** Xoá hẳn sản phẩm. Đơn hàng cũ vẫn giữ tên/ảnh/giá đã lưu lúc đặt nên không bị ảnh hưởng. */
+export async function deleteProduct(id: string): Promise<void> {
+  const res = await db.product.deleteMany({ where: { id } });
+  if (res.count === 0) throw new ProductError("not_found", "Không tìm thấy sản phẩm.", 404);
 }

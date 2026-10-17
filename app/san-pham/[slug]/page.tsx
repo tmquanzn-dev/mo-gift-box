@@ -8,14 +8,7 @@ import { ProductPurchasePanel } from "@/components/features/product/ProductPurch
 import { Badge, Breadcrumb, PriceTag } from "@/components/ui/Display";
 import { siteConfig } from "@/config/site.config";
 import { BADGES, COLOR_THEMES } from "@/lib/catalog";
-import { getProductBySlug, getRelatedProducts, listAllProductSlugs, listOccasions } from "@/services/product.service";
-
-export const revalidate = 300;
-
-export async function generateStaticParams() {
-  const slugs = await listAllProductSlugs();
-  return slugs.map(({ slug }) => ({ slug }));
-}
+import { getProductBySlug, getRelatedProducts, listOccasions } from "@/services/product.service";
 
 export async function generateMetadata({ params }: PageProps<"/san-pham/[slug]">): Promise<Metadata> {
   const { slug } = await params;

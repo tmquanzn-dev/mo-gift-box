@@ -8,6 +8,14 @@ export function removeDiacritics(input: string): string {
     .toLowerCase();
 }
 
+/** Tạo đường dẫn từ tên: "Hộp quà 20/10 Hồng" -> "hop-qua-20-10-hong" */
+export function slugify(input: string): string {
+  return removeDiacritics(input)
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 120);
+}
+
 /** Gom khoảng trắng thừa trong lời chúc, giữ tối đa một dòng trống giữa các đoạn. */
 export function normalizeMessage(input: string): string {
   return input

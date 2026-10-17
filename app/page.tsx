@@ -15,9 +15,6 @@ import { upcomingOccasion } from "@/lib/occasions";
 import { getFeaturedCoupon } from "@/services/coupon.service";
 import { getBestSellers, listOccasions } from "@/services/product.service";
 
-// Trang chủ được tạo sẵn và làm mới mỗi 5 phút (ISR) để tải nhanh trên điện thoại
-export const revalidate = 300;
-
 const STEPS = [
   { title: "Chọn hộp", text: "Lọc theo dịp hoặc ngân sách, chọn hộp quà bạn ưng nhất.", image: "/images/steps/buoc-1.svg" },
   { title: "Cá nhân hoá", text: "Thêm tên người nhận, lời chúc và chọn mẫu thiệp.", image: "/images/steps/buoc-2.svg" },

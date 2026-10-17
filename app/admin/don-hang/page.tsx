@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { LogoutButton } from "@/components/features/admin/AdminClient";
 import { Badge, EmptyState } from "@/components/ui/Display";
 import { Input } from "@/components/ui/Form";
 import { ORDER_STATUS_FLOW, ORDER_STATUS_LABELS, PAYMENT_STATUS_LABELS } from "@/lib/catalog";
@@ -23,10 +22,7 @@ export default async function AdminOrdersPage({ searchParams }: PageProps<"/admi
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-h1 font-bold">Đơn hàng</h1>
-        <LogoutButton />
-      </div>
+      <h1 className="text-h1 font-bold">Đơn hàng</h1>
 
       <nav aria-label="Lọc theo trạng thái" className="scrollbar-none flex gap-2 overflow-x-auto">
         <Link href="/admin/don-hang" className={cn("shrink-0 rounded-full border px-4 py-2 text-small font-medium", !status ? "border-primary bg-primary text-on-dark" : "border-secondary bg-surface")}>

@@ -2,6 +2,7 @@ import "server-only";
 import { NextResponse, type NextRequest } from "next/server";
 import type { z } from "zod";
 import { OrderError } from "@/services/order.service";
+import { ProductError } from "@/services/product.service";
 import { rateLimit } from "./security";
 
 export type ApiError = { ok: false; error: string; code?: string; fieldErrors?: Record<string, string> };
@@ -60,6 +61,9 @@ export async function parseBody<S extends z.ZodType>(
 
 export function handleServiceError(error: unknown) {
   if (error instanceof OrderError) return apiError(error.message, error.status, { code: error.code });
+  if (error instanceof ProductError) {
+    return apiError(error.message, error.status, { code: error.code, ...(error.field ? { fieldErrors: { [error.field]: error.message } } : {}) });
+  }
   console.error(error);
   return apiError("MÓ gặp chút trục trặc, bạn thử lại sau ít phút nhé.", 500);
 }

@@ -3,8 +3,6 @@ import { BoxBuilder } from "@/components/features/builder/BoxBuilder";
 import { Breadcrumb } from "@/components/ui/Display";
 import { listBoxItems } from "@/services/product.service";
 
-export const revalidate = 300;
-
 export const metadata: Metadata = {
   title: "Tự thiết kế hộp quà",
   description: "Tự chọn kích thước hộp, từng món bánh kẹo, màu nơ, thiệp và lời chúc. MÓ gói tay theo đúng ý bạn.",

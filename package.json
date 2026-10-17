@@ -2,17 +2,22 @@
   "name": "mo-gift-box",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "setup": "prisma generate && prisma db push && npm run db:seed && npm run images",
     "dev": "next dev",
     "build": "prisma generate && next build",
     "start": "next start",
+    "start:prod": "prisma db push --skip-generate && npm run db:seed-if-empty && next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
     "db:push": "prisma db push",
     "db:seed": "tsx prisma/seed.ts",
+    "db:seed-if-empty": "tsx scripts/seed-if-empty.ts",
     "db:studio": "prisma studio",
     "db:reset": "prisma db push --force-reset && npm run db:seed",
     "images": "node scripts/generate-placeholders.mjs",

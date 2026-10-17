@@ -248,3 +248,51 @@ export const shipmentSchema = z
     path: ["trackingCode"],
   });
 export type ShipmentPayload = z.output<typeof shipmentSchema>;
+
+/* ---------- Sản phẩm (admin nhập) ---------- */
+
+const RECIPIENT_IDS = ["ban-be", "thay-co", "nguoi-yeu", "gia-dinh", "dong-nghiep"] as const;
+const COLOR_THEME_IDS = ["hong", "do", "xanh-duong", "xanh-la", "vang", "kraft", "tim"] as const;
+/** "sap-het" tính tự động theo tồn kho nên admin không gán tay. */
+const MANUAL_BADGE_IDS = ["ban-chay", "moi"] as const;
+
+const money = (label: string) =>
+  z.number({ message: `${label} phải là số.` }).int({ message: `${label} phải là số nguyên.` }).min(0, { message: `${label} không được âm.` }).max(100_000_000, { message: `${label} quá lớn.` });
+const centimeters = (label: string) => z.number({ message: `${label} phải là số.` }).min(0, { message: `${label} không được âm.` }).max(500, { message: `${label} tối đa 500 cm.` });
+
+/** Đường dẫn ảnh nội bộ: ảnh có sẵn trong /images hoặc ảnh admin tải lên /uploads. */
+const imagePath = z.string().regex(/^\/(images|uploads)\/[A-Za-z0-9._\/-]+$/, { message: "Đường dẫn ảnh không hợp lệ." }).refine((v) => !v.includes(".."), { message: "Đường dẫn ảnh không hợp lệ." });
+
+export const productInputSchema = z
+  .object({
+    name: z.string().trim().min(2, { message: "Tên sản phẩm cần ít nhất 2 ký tự." }).max(120, { message: "Tên sản phẩm tối đa 120 ký tự." }),
+    slug: z
+      .string()
+      .trim()
+      .min(2, { message: "Đường dẫn cần ít nhất 2 ký tự." })
+      .max(120, { message: "Đường dẫn tối đa 120 ký tự." })
+      .regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, { message: "Đường dẫn chỉ gồm chữ thường không dấu, số và dấu gạch ngang." }),
+    shortDescription: z.string().trim().min(1, { message: "Bạn nhập mô tả ngắn nhé." }).max(300, { message: "Mô tả ngắn tối đa 300 ký tự." }),
+    description: z.string().trim().min(1, { message: "Bạn nhập mô tả chi tiết nhé." }).max(5000, { message: "Mô tả chi tiết tối đa 5000 ký tự." }),
+    price: money("Giá bán").min(1000, { message: "Giá bán tối thiểu 1.000đ." }),
+    compareAtPrice: money("Giá gốc").nullable(),
+    stock: z.number({ message: "Tồn kho phải là số." }).int({ message: "Tồn kho phải là số nguyên." }).min(0, { message: "Tồn kho không được âm." }).max(100_000),
+    images: z.array(imagePath).min(1, { message: "Sản phẩm cần ít nhất 1 ảnh." }).max(10, { message: "Tối đa 10 ảnh." }),
+    occasions: z.array(z.string().max(60)).max(20),
+    recipients: z.array(z.enum(RECIPIENT_IDS)).max(RECIPIENT_IDS.length),
+    colorThemes: z.array(z.enum(COLOR_THEME_IDS)).min(1, { message: "Chọn ít nhất 1 màu hộp." }),
+    badges: z.array(z.enum(MANUAL_BADGE_IDS)).max(MANUAL_BADGE_IDS.length),
+    dimensions: z.object({ length: centimeters("Chiều dài"), width: centimeters("Chiều rộng"), height: centimeters("Chiều cao") }),
+    contents: z
+      .array(
+        z.object({
+          name: z.string().trim().min(1, { message: "Bạn nhập tên món nhé." }).max(100, { message: "Tên món tối đa 100 ký tự." }),
+          quantity: z.number().int().min(1, { message: "Số lượng tối thiểu là 1." }).max(999),
+        }),
+      )
+      .max(30, { message: "Tối đa 30 món trong hộp." }),
+    isCustomizable: z.boolean(),
+    isActive: z.boolean(),
+  })
+  .refine((v) => v.compareAtPrice == null || v.compareAtPrice > v.price, { message: "Giá gốc phải cao hơn giá bán (hoặc để trống).", path: ["compareAtPrice"] });
+export type ProductInput = z.output<typeof productInputSchema>;

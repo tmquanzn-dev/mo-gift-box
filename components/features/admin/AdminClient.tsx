@@ -1,17 +1,49 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
+import { LogoutButton } from "@/components/features/account/AccountClient";
 import { Button } from "@/components/ui/Button";
 import { Field, Input, Select } from "@/components/ui/Form";
 import { toast } from "@/components/ui/Toaster";
 import { postJSON } from "@/lib/api-client";
 import { CARRIER_IDS, CARRIERS, type CarrierId } from "@/lib/carriers";
 import { ORDER_STATUS_LABELS, PAYMENT_STATUS_LABELS } from "@/lib/catalog";
+import { cn } from "@/lib/text";
 import type { OrderStatus, PaymentStatus, Shipment } from "@/types";
 
 // Đăng xuất dùng chung với khách hàng
-export { LogoutButton } from "@/components/features/account/AccountClient";
+export { LogoutButton };
+
+const ADMIN_LINKS = [
+  { href: "/admin/don-hang", label: "Đơn hàng" },
+  { href: "/admin/san-pham", label: "Sản phẩm" },
+];
+
+export function AdminNav() {
+  const pathname = usePathname();
+  return (
+    <div className="mb-6 flex flex-wrap items-center justify-between gap-3 border-b border-border pb-4">
+      <nav aria-label="Quản trị" className="flex gap-2">
+        {ADMIN_LINKS.map((l) => {
+          const active = pathname.startsWith(l.href);
+          return (
+            <Link
+              key={l.href}
+              href={l.href}
+              aria-current={active ? "page" : undefined}
+              className={cn("rounded-full px-4 py-2 text-small font-semibold", active ? "bg-primary text-on-dark" : "text-primary hover:bg-primary-soft")}
+            >
+              {l.label}
+            </Link>
+          );
+        })}
+      </nav>
+      <LogoutButton />
+    </div>
+  );
+}
 
 export function OrderStatusActions({ code, nextStatuses, paymentStatus }: { code: string; nextStatuses: OrderStatus[]; paymentStatus: PaymentStatus }) {
   const router = useRouter();

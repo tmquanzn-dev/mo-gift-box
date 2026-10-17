@@ -39,7 +39,7 @@ export async function saveImage(file: File, folder = "products"): Promise<string
   const buf = Buffer.from(await file.arrayBuffer());
   const ext = sniff(buf);
   if (!ext) throw new UploadError(`"${file.name}" không phải ảnh JPG, PNG, WEBP, GIF hoặc AVIF.`);
-  const dir = path.join(UPLOAD_ROOT, folder);
+  const dir = path.join(/*turbopackIgnore: true*/ UPLOAD_ROOT, folder);
   await mkdir(dir, { recursive: true });
   const name = `${randomUUID()}.${ext}`;
   await writeFile(path.join(dir, name), buf);
@@ -51,7 +51,7 @@ export async function readUpload(segments: string[]): Promise<{ data: Buffer; co
   if (!segments.length || segments.some((s) => !/^[A-Za-z0-9_-][A-Za-z0-9._-]*$/.test(s))) return null;
   const ext = path.extname(segments[segments.length - 1]).slice(1) as Ext;
   if (!(ext in TYPES)) return null;
-  const file = path.join(UPLOAD_ROOT, ...segments);
+  const file = path.join(/*turbopackIgnore: true*/ UPLOAD_ROOT, ...segments);
   if (!file.startsWith(UPLOAD_ROOT + path.sep)) return null;
   try {
     return { data: await readFile(file), contentType: TYPES[ext] };
